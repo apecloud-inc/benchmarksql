@@ -47,6 +47,7 @@ public class jTPCC implements jTPCCConfig
     private jTPCCRandom rnd;
     private OSCollector osCollector = null;
     private HashMap<String, Long> costPerWorkerload;
+	private String result;
 
     public static void main(String args[])
     {
@@ -322,7 +323,7 @@ public class jTPCC implements jTPCCConfig
 		log.info("Term-00, ");
 
 		fastNewOrderCounter = 0;
-		updateStatusLine();
+		// updateStatusLine();
 
 		try
 		{
@@ -567,7 +568,7 @@ public class jTPCC implements jTPCCConfig
 	    {
 	    }
 	}
-	updateStatusLine();
+	// updateStatusLine();
     }
 
     private void signalTerminalsRequestEnd(boolean timeTriggered)
@@ -656,7 +657,7 @@ public class jTPCC implements jTPCCConfig
 	    signalTerminalsRequestEnd(true);
 	}
 
-       updateStatusLine();
+    //    updateStatusLine();
 
     }
 
@@ -671,8 +672,12 @@ public class jTPCC implements jTPCCConfig
 	{
 	    try
 	    {
-		resultCSV.write(runID + "," +
-				term.resultLine(sessionStartTimestamp));
+		result = term.resultLine(sessionStartTimestamp);
+		// split the result string into its components
+		String[] resultArray = result.split(",");
+		// log the result
+		log.info("Term-00, " + "elapsed=" + resultArray[0] + ",latency=" + resultArray[1] + ",dblatency=" + resultArray[2] + ",ttype=" + resultArray[3] + ",rbk=" + resultArray[4] + ",dskipped=" + resultArray[5] + ",error=" + resultArray[6].trim());
+		resultCSV.write(runID + "," + result);
 	    }
 	    catch (IOException e)
 	    {
@@ -729,34 +734,34 @@ public class jTPCC implements jTPCCConfig
 	return dateFormat.format(new java.util.Date());
     }
 
-    synchronized private void updateStatusLine()
-    {
-	long currTimeMillis = System.currentTimeMillis();
+    // synchronized private void updateStatusLine()
+    // {
+	// long currTimeMillis = System.currentTimeMillis();
 
-	if(currTimeMillis > sessionNextTimestamp)
-	{
-	    StringBuilder informativeText = new StringBuilder("");
-	    Formatter fmt = new Formatter(informativeText);
-	    double tpmC = (6000000*fastNewOrderCounter/(currTimeMillis - sessionStartTimestamp))/100.0;
-	    double tpmTotal = (6000000*transactionCount/(currTimeMillis - sessionStartTimestamp))/100.0;
+	// if(currTimeMillis > sessionNextTimestamp)
+	// {
+	//     StringBuilder informativeText = new StringBuilder("");
+	//     Formatter fmt = new Formatter(informativeText);
+	//     double tpmC = (6000000*fastNewOrderCounter/(currTimeMillis - sessionStartTimestamp))/100.0;
+	//     double tpmTotal = (6000000*transactionCount/(currTimeMillis - sessionStartTimestamp))/100.0;
 
-	    sessionNextTimestamp += 1000;  /* update this every seconds */
+	//     sessionNextTimestamp += 1000;  /* update this every seconds */
 
-	    fmt.format("Term-00, Running Average tpmTOTAL: %.2f", tpmTotal);
+	//     fmt.format("Term-00, Running Average tpmTOTAL: %.2f", tpmTotal);
 
-	    /* XXX What is the meaning of these numbers? */
-	    recentTpmC = (fastNewOrderCounter - sessionNextKounter) * 12;
-	    recentTpmTotal= (transactionCount-sessionNextKounter)*12;
-	    sessionNextKounter = fastNewOrderCounter;
-	    fmt.format("    Current tpmTOTAL: %d", recentTpmTotal);
+	//     /* XXX What is the meaning of these numbers? */
+	//     recentTpmC = (fastNewOrderCounter - sessionNextKounter) * 12;
+	//     recentTpmTotal= (transactionCount-sessionNextKounter)*12;
+	//     sessionNextKounter = fastNewOrderCounter;
+	//     fmt.format("    Current tpmTOTAL: %d", recentTpmTotal);
 
-	    long freeMem = Runtime.getRuntime().freeMemory() / (1024*1024);
-	    long totalMem = Runtime.getRuntime().totalMemory() / (1024*1024);
-	    fmt.format("    Memory Usage: %dMB / %dMB          ", (totalMem - freeMem), totalMem);
+	//     long freeMem = Runtime.getRuntime().freeMemory() / (1024*1024);
+	//     long totalMem = Runtime.getRuntime().totalMemory() / (1024*1024);
+	//     fmt.format("    Memory Usage: %dMB / %dMB          ", (totalMem - freeMem), totalMem);
 
-	    System.out.print(informativeText);
-	    for (int count = 0; count < 1+informativeText.length(); count++)
-		System.out.print("\b");
-	}
-    }
+	//     System.out.print(informativeText);
+	//     for (int count = 0; count < 1+informativeText.length(); count++)
+	// 	System.out.print("\b");
+	// }
+    // }
 }
