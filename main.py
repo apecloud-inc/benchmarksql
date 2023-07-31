@@ -1,4 +1,5 @@
 import argparse
+import sys
 import subprocess
 
 template = '''
@@ -62,12 +63,9 @@ parser.add_argument('--stockLevelWeight', type=int, default=4, help='percentage 
 
 # exec shell script and print the output in real time
 def run_shell(cmd):
-    p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, shell=True)
-    while True:
-        line = p.stdout.readline()
-        if not line:
-            break
-        print(line.decode('utf-8').strip())
+    p = subprocess.Popen(cmd, stdout=sys.stdout.fileno(), stderr=sys.stderr.fileno(), shell=True)
+    p.wait()
+
 
 def main():
     args = parser.parse_args()
