@@ -59,6 +59,7 @@ parser.add_argument('--paymentWeight', type=int, default=43, help='percentage of
 parser.add_argument('--orderStatusWeight', type=int, default=4, help='percentage of orderStatus transactions')
 parser.add_argument('--deliveryWeight', type=int, default=4, help='percentage of delivery transactions')
 parser.add_argument('--stockLevelWeight', type=int, default=4, help='percentage of stockLevel transactions')
+parser.add_argument('--mode', type=str, default='all', help='mode to run the benchmark, all, cleanup, prepare, run')
 
 
 # exec shell script and print the output in real time
@@ -73,14 +74,36 @@ def main():
     with open('run/config.properties', 'w') as f:
         f.write(template.format(**vars(args)))
 
-    # run runDatabaseDestroy.sh in run directory with config.properties
-    run_shell('cd run && ./runDatabaseDestroy.sh config.properties')
-    
-    # run runDatabaseBuild.sh in run directory with config.properties
-    run_shell('cd run && ./runDatabaseBuild.sh config.properties')
+    if args.mode == 'all':
+        # run cleanup, prepare and run
 
-    # run runBenchmark.sh in run directory with config.properties
-    run_shell('cd run && ./runBenchmark.sh config.properties')
+        # run runDatabaseDestroy.sh in run directory with config.properties
+        run_shell('cd run && ./runDatabaseDestroy.sh config.properties')
+    
+        # run runDatabaseBuild.sh in run directory with config.properties
+        run_shell('cd run && ./runDatabaseBuild.sh config.properties')
+
+        # run runBenchmark.sh in run directory with config.properties
+        run_shell('cd run && ./runBenchmark.sh config.properties')
+
+    if args.mode == 'cleanup':
+        # run cleanup
+
+        # run runDatabaseDestroy.sh in run directory with config.properties
+        run_shell('cd run && ./runDatabaseDestroy.sh config.properties')
+
+    if args.mode == 'prepare':
+        # run prepare
+
+        # run runDatabaseBuild.sh in run directory with config.properties
+        run_shell('cd run && ./runDatabaseBuild.sh config.properties')
+
+    if args.mode == 'run':
+        # run run
+
+        # run runBenchmark.sh in run directory with config.properties
+        run_shell('cd run && ./runBenchmark.sh config.properties')
+
 
 
 if __name__ == '__main__':
