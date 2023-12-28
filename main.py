@@ -53,7 +53,7 @@ parser.add_argument('--threads', type=int, default=1, help='number of parallel t
 parser.add_argument('--runTxnsPerTerminal', type=int, default=0, help='number of transactions to run per thread')
 parser.add_argument('--runMins', type=int, default=1, help='number of minutes to run the benchmark')
 parser.add_argument('--limitTxnsPerMin', type=int, default=0, help='number of transactions to run per minute, 0 means unlimited')
-parser.add_argument('--terminalWarehouseFixed', type=bool, default=False, help='Set to true to run in 4.x compatible mode. Set to false to use the entire configured database evenly.')
+parser.add_argument('--terminalWarehouseFixed', type=bool, default=True, help='Set to true to run in 4.x compatible mode. Set to false to use the entire configured database evenly.')
 parser.add_argument('--newOrderWeight', type=int, default=45, help='percentage of newOrder transactions')
 parser.add_argument('--paymentWeight', type=int, default=43, help='percentage of payment transactions')
 parser.add_argument('--orderStatusWeight', type=int, default=4, help='percentage of orderStatus transactions')
