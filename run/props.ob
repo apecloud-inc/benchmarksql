@@ -1,4 +1,5 @@
-db=oceanbase
+// the tpcc test for oceanbase oracle mode
+db=oracle
 driver=com.oceanbase.jdbc.Driver
 conn=jdbc:oceanbase://127.0.0.1:2881/test?useUnicode=true&characterEncoding=utf-8
 user=TEST@test
@@ -11,7 +12,7 @@ terminals=1
 //To run specified transactions per terminal- runMins must equal zero
 runTxnsPerTerminal=0
 //To run for specified minutes- runTxnsPerTerminal must equal zero
-runMins=0
+runMins=1
 //Number of total transactions per minute
 limitTxnsPerMin=0
 

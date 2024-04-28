@@ -206,47 +206,7 @@ public class jTPCCConnection
 		"    WHERE ol_w_id = ? AND ol_d_id = ? AND ol_o_id = ? " +
 		"    ORDER BY ol_w_id, ol_d_id, ol_o_id, ol_number");
 
-	// PreparedStatements for STOCK_LEVEL
-	switch (dbType)
-	{
-	    case jTPCCConfig.DB_POSTGRES:
-	    case jTPCCConfig.DB_MYSQL:
-		stmtStockLevelSelectLow = dbConn.prepareStatement(
-		    "SELECT count(*) AS low_stock FROM (" +
-		    "    SELECT s_w_id, s_i_id, s_quantity " +
-		    "        FROM bmsql_stock " +
-		    "        WHERE s_w_id = ? AND s_quantity < ? AND s_i_id IN (" +
-		    "            SELECT /*+ TIDB_INLJ(bmsql_order_line) */ ol_i_id " +
-		    "                FROM bmsql_district " +
-		    "                JOIN bmsql_order_line ON ol_w_id = d_w_id " +
-		    "                 AND ol_d_id = d_id " +
-		    "                 AND ol_o_id >= d_next_o_id - 20 " +
-		    "                 AND ol_o_id < d_next_o_id " +
-		    "                WHERE d_w_id = ? AND d_id = ? " +
-		    "        ) " +
-		    "    ) AS L");
-		break;
-
-	    default:
-		stmtStockLevelSelectLow = dbConn.prepareStatement(
-		    "SELECT count(*) AS low_stock FROM (" +
-		    "    SELECT s_w_id, s_i_id, s_quantity " +
-		    "        FROM bmsql_stock " +
-		    "        WHERE s_w_id = ? AND s_quantity < ? AND s_i_id IN (" +
-		    "            SELECT ol_i_id " +
-		    "                FROM bmsql_district " +
-		    "                JOIN bmsql_order_line ON ol_w_id = d_w_id " +
-		    "                 AND ol_d_id = d_id " +
-		    "                 AND ol_o_id >= d_next_o_id - 20 " +
-		    "                 AND ol_o_id < d_next_o_id " +
-		    "                WHERE d_w_id = ? AND d_id = ? " +
-		    "        ) " +
-		    "    )AS L");
-		break;
-	}
-
-
-		// PreparedStatements for DELIVERY_BG
+	// PreparedStatements for DELIVERY_BG
     stmtDeliveryBGSelectOldestNewOrder = dbConn.prepareStatement(
         "SELECT no_o_id " +
         "    FROM bmsql_new_order " +
@@ -295,7 +255,67 @@ public class jTPCCConnection
 		"    SET c_balance = c_balance + ?, " +
 		"        c_delivery_cnt = c_delivery_cnt + 1 " +
 		"    WHERE c_w_id = ? AND c_d_id = ? AND c_id = ?");
+
+	// PreparedStatements for STOCK_LEVEL
+	switch (dbType)
+	{
+	    case jTPCCConfig.DB_POSTGRES:
+	    case jTPCCConfig.DB_MYSQL:
+		stmtStockLevelSelectLow = dbConn.prepareStatement(
+		    "SELECT count(*) AS low_stock FROM (" +
+		    "    SELECT s_w_id, s_i_id, s_quantity " +
+		    "        FROM bmsql_stock " +
+		    "        WHERE s_w_id = ? AND s_quantity < ? AND s_i_id IN (" +
+		    "            SELECT /*+ TIDB_INLJ(bmsql_order_line) */ ol_i_id " +
+		    "                FROM bmsql_district " +
+		    "                JOIN bmsql_order_line ON ol_w_id = d_w_id " +
+		    "                 AND ol_d_id = d_id " +
+		    "                 AND ol_o_id >= d_next_o_id - 20 " +
+		    "                 AND ol_o_id < d_next_o_id " +
+		    "                WHERE d_w_id = ? AND d_id = ? " +
+		    "        ) " +
+		    "    ) AS L");
+		break;
+
+		case jTPCCConfig.DB_ORACLE:
+		stmtOrderStatusSelectLastOrder = dbConn.prepareStatement(
+			"SELECT o_id, o_entry_d, o_carrier_id " +
+			"    FROM bmsql_oorder " +
+			"    WHERE o_w_id = ? AND o_d_id = ? AND o_c_id = ? " +
+			"      ORDER BY o_id DESC OFFSET 0 ROWS FETCH NEXT 1 ROWS ONLY");
+
+    	stmtDeliveryBGSelectOldestNewOrder = dbConn.prepareStatement(
+			"SELECT no_o_id " +
+			"    FROM ( " +
+			"    SELECT no_o_id " +
+			"        FROM bmsql_new_order " +
+			"        WHERE no_w_id = ? AND no_d_id = ? " +
+			"        ORDER BY no_o_id ASC" +
+			"        OFFSET 0 ROWS FETCH NEXT 1 ROWS ONLY" +
+			"    ) FOR UPDATE" ); 
+		
+
+	    default:
+		stmtStockLevelSelectLow = dbConn.prepareStatement(
+		    "SELECT count(*) AS low_stock FROM (" +
+		    "    SELECT s_w_id, s_i_id, s_quantity " +
+		    "        FROM bmsql_stock " +
+		    "        WHERE s_w_id = ? AND s_quantity < ? AND s_i_id IN (" +
+		    "            SELECT ol_i_id " +
+		    "                FROM bmsql_district " +
+		    "                JOIN bmsql_order_line ON ol_w_id = d_w_id " +
+		    "                 AND ol_d_id = d_id " +
+		    "                 AND ol_o_id >= d_next_o_id - 20 " +
+		    "                 AND ol_o_id < d_next_o_id " +
+		    "                WHERE d_w_id = ? AND d_id = ? " +
+		    "        ) " +
+		    "    )");
+		break;
+	}
+
+
     }
+
 
     public jTPCCConnection(String connURL, Properties connProps, int dbType)
 	throws SQLException
