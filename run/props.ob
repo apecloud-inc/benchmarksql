@@ -1,6 +1,6 @@
 // the tpcc test for oceanbase oracle mode
 db=oracle
-driver=com.oceanbase.jdbc.Driver
+driver=com.alipay.oceanbase.obproxy.mysql.jdbc.Driver
 conn=jdbc:oceanbase://127.0.0.1:2881/test?useUnicode=true&characterEncoding=utf-8
 user=TEST@test
 password=WXBedKG9D8
