@@ -70,6 +70,10 @@ def run_shell(cmd):
 
 def main():
     args = parser.parse_args()
+    # if the runTxnsPerTerminal is set, runMins must be 0
+    if args.runTxnsPerTerminal != 0:
+        args.runMins = 0
+
     # save config.properties in run directory
     with open('run/config.properties', 'w') as f:
         f.write(template.format(**vars(args)))
