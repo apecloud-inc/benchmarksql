@@ -44,6 +44,9 @@ function setCP()
 	oceanbase)
 	    cp="../lib/oceanbase/*:../lib/*"
 	    ;;
+	dameng)
+		cp="../lib/dameng/*:../lib/*"
+		;;
     esac
     myCP=".:${cp}:../dist/*"
     export myCP
@@ -54,7 +57,7 @@ function setCP()
 # is a database, we support.
 # ----
 case "$(getProp db)" in
-    firebird|oracle|postgres|mysql|oceanbase)
+    firebird|oracle|postgres|mysql|oceanbase|dameng)
 	;;
     "")	echo "ERROR: missing db= config option in ${PROPS}" >&2
 	exit 1
