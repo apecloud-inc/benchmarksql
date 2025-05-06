@@ -129,6 +129,8 @@ public class jTPCC implements jTPCCConfig
 		dbType = DB_OCEANBASE;
 	else if (iDB.equals("dameng"))
 		dbType = DB_DAMENG;
+	else if (iDB.equals("tidb"))
+		dbType = DB_TIDB;
 	else
 	{
 	    log.error("unknown database type '" + iDB + "'");

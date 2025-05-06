@@ -19,7 +19,8 @@ public interface jTPCCConfig
 				DB_POSTGRES = 3,
 				DB_MYSQL = 4,
                 DB_OCEANBASE = 5,
-                DB_DAMENG = 6 ;
+                DB_DAMENG = 6, 
+                DB_TIDB = 7;
 
     public final static int     NEW_ORDER = 1,
 				PAYMENT = 2,
