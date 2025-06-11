@@ -50,6 +50,9 @@ function setCP()
 	tidb)
 		cp="../lib/tidb/*:../lib/*"
 		;;
+	mssql)
+		cp="../lib/mssql/*:../lib/*"
+		;;
     esac
     myCP=".:${cp}:../dist/*"
     export myCP
@@ -60,7 +63,7 @@ function setCP()
 # is a database, we support.
 # ----
 case "$(getProp db)" in
-    firebird|oracle|postgres|mysql|oceanbase|dameng|tidb)
+    firebird|oracle|postgres|mysql|oceanbase|dameng|tidb|mssql)
 	;;
     "")	echo "ERROR: missing db= config option in ${PROPS}" >&2
 	exit 1

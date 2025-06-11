@@ -1,6 +1,17 @@
 BENCHMARKSQL README
 ===================
 
+Support List:
+  + dameng
+  + firebird
+  + mssql (Microsoft Sql Server)
+  + mysql
+  + oceanbase
+  + oracle
+  + postgres
+  + tidb
+
+
 CHANGE LOG:
 -----------
 

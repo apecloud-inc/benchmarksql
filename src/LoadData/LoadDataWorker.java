@@ -55,7 +55,7 @@ public class LoadDataWorker implements Runnable
     private StringBuffer        sbNewOrder = null;
     private Formatter           fmtNewOrder = null;
 
-    LoadDataWorker(int worker, String csvNull, jTPCCRandom rnd)
+    LoadDataWorker(int worker, String csvNull, jTPCCRandom rnd, int dbType)
     {
 	this.worker             = worker;
 	this.csvNull            = csvNull;
@@ -87,7 +87,7 @@ public class LoadDataWorker implements Runnable
 	this.fmtNewOrder        = new Formatter(sbNewOrder);
     }
 
-    LoadDataWorker(int worker, Connection dbConn, jTPCCRandom rnd)
+    LoadDataWorker(int worker, Connection dbConn, jTPCCRandom rnd, int dbType)
 	throws SQLException
     {
 	this.worker     = worker;
@@ -159,7 +159,22 @@ public class LoadDataWorker implements Runnable
 		"  no_w_id, no_d_id, no_o_id) " +
 		"VALUES (?, ?, ?)"
 	    );
+
+	switch (dbType) 
+	{
+	case jTPCCConfig.DB_MSSQL:
+	stmtHistory = dbConn.prepareStatement(
+		"SET IDENTITY_INSERT bmsql_history ON " +
+		"INSERT INTO bmsql_history (" +
+		"  hist_id, h_c_id, h_c_d_id, h_c_w_id, h_d_id, h_w_id, " +
+		"  h_date, h_amount, h_data) " +
+		"VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)" +
+		"SET IDENTITY_INSERT bmsql_history OFF "
+	    );
+
+	}
     }
+
 
     /*
      * run()

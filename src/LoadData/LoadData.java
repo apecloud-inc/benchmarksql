@@ -133,6 +133,31 @@ public class LoadData
 
 	System.out.println("");
 
+	String  iDB = ini.getProperty("db");
+	int dbType = jTPCCConfig.DB_UNKNOWN;
+	if (iDB.equals("firebird"))
+	    dbType = jTPCCConfig.DB_FIREBIRD;
+	else if (iDB.equals("oracle"))
+	    dbType = jTPCCConfig.DB_ORACLE;
+	else if (iDB.equals("postgres"))
+	    dbType = jTPCCConfig.DB_POSTGRES;
+	else if (iDB.equals("mysql"))
+	    dbType = jTPCCConfig.DB_MSSQL;
+	else if (iDB.equals("oceanbase"))	
+		dbType = jTPCCConfig.DB_OCEANBASE;
+	else if (iDB.equals("dameng"))
+		dbType = jTPCCConfig.DB_DAMENG;
+	else if (iDB.equals("tidb"))
+		dbType = jTPCCConfig.DB_TIDB;
+	else if (iDB.equals("mssql"))
+		dbType = jTPCCConfig.DB_MSSQL;
+	else
+	{
+	    System.err.println("unknown database type '" + iDB + "'");
+	    System.exit(1);
+	}
+
+
 	/*
 	 * Create the number of requested workers and start them.
 	 */
@@ -148,10 +173,10 @@ public class LoadData
 		dbConn.setAutoCommit(false);
 		if (writeCSV)
 		    workers[i] = new LoadDataWorker(i, csvNullValue,
-							rnd.newRandom());
+							rnd.newRandom(), dbType);
 		else
 		    workers[i] = new LoadDataWorker(i, dbConn,
-							rnd.newRandom());
+							rnd.newRandom(), dbType);
 		workerThreads[i] = new Thread(workers[i]);
 		workerThreads[i].start();
 	    }

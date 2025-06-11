@@ -131,6 +131,8 @@ public class jTPCC implements jTPCCConfig
 		dbType = DB_DAMENG;
 	else if (iDB.equals("tidb"))
 		dbType = DB_TIDB;
+	else if (iDB.equals("mssql"))
+		dbType = DB_MSSQL;
 	else
 	{
 	    log.error("unknown database type '" + iDB + "'");
