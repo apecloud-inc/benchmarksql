@@ -8,6 +8,7 @@ driver={driver}
 conn={conn}
 user={user}
 password={password}
+database={database}
 
 warehouses={warehouses}
 loadWorkers={loadWorkers}
@@ -47,6 +48,7 @@ parser.add_argument('--driver', type=str, default='org.postgresql.Driver', help=
 parser.add_argument('--conn', type=str, default='jdbc:postgresql://localhost:5432/postgres', help='JDBC connection string')
 parser.add_argument('--user', type=str, default='postgres', help='database user')
 parser.add_argument('--password', type=str, default='postgres', help='database password')
+parser.add_argument('--database', type=str, default='test', help='database name')
 parser.add_argument('--warehouses', type=int, default=1, help='overall database size scale factor')
 parser.add_argument('--loadWorkers', type=int, default=4, help='number of parallel threads used to create the initial content')
 parser.add_argument('--threads', type=int, default=1, help='number of parallel threads used to run the benchmark')
@@ -83,7 +85,7 @@ def main():
 
         # run runDatabaseDestroy.sh in run directory with config.properties
         run_shell('cd run && ./runDatabaseDestroy.sh config.properties')
-    
+
         # run runDatabaseBuild.sh in run directory with config.properties
         run_shell('cd run && ./runDatabaseBuild.sh config.properties')
 

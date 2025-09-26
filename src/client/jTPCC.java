@@ -125,7 +125,7 @@ public class jTPCC implements jTPCCConfig
 	    dbType = DB_POSTGRES;
 	else if (iDB.equals("mysql"))
 	    dbType = DB_MYSQL;
-	else if (iDB.equals("oceanbase"))	
+	else if (iDB.equals("oceanbase"))
 		dbType = DB_OCEANBASE;
 	else if (iDB.equals("dameng"))
 		dbType = DB_DAMENG;
@@ -213,7 +213,7 @@ public class jTPCC implements jTPCCConfig
 	    // Copy the used properties file into the resultDirectory.
 	    try
 	    {
-		Files.copy(new File(System.getProperty("prop")).toPath(), 
+		Files.copy(new File(System.getProperty("prop")).toPath(),
 			  new File(resultDir, "run.properties").toPath());
 	    }
 	    catch (IOException e)
