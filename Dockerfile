@@ -1,10 +1,9 @@
 FROM ubuntu:18.04
 
 # Install dependencies
-RUN apt -y update
+RUN apt-get update
 
-# install python3, java, ant
-RUN apt -y install python3 openjdk-8-jdk ant
+RUN apt-get install -y python3 openjdk-8-jdk ant
 
 COPY . /benchmarksql
 
@@ -13,3 +12,5 @@ WORKDIR /benchmarksql
 
 # build benchmarksql
 RUN ant
+
+RUN apt-get clean && rm -rf /var/lib/apt/lists/*
