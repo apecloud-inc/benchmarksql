@@ -142,8 +142,8 @@ public class LoadData
 	else if (iDB.equals("postgres"))
 	    dbType = jTPCCConfig.DB_POSTGRES;
 	else if (iDB.equals("mysql"))
-	    dbType = jTPCCConfig.DB_MSSQL;
-	else if (iDB.equals("oceanbase"))	
+	    dbType = jTPCCConfig.DB_MYSQL;
+	else if (iDB.equals("oceanbase"))
 		dbType = jTPCCConfig.DB_OCEANBASE;
 	else if (iDB.equals("dameng"))
 		dbType = jTPCCConfig.DB_DAMENG;
