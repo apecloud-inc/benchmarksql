@@ -151,6 +151,8 @@ public class LoadData
 		dbType = jTPCCConfig.DB_TIDB;
 	else if (iDB.equals("mssql"))
 		dbType = jTPCCConfig.DB_MSSQL;
+	else if (iDB.equals("gaussdb"))
+		dbType = jTPCCConfig.DB_GAUSSDB;
 	else
 	{
 	    System.err.println("unknown database type '" + iDB + "'");

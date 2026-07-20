@@ -53,6 +53,9 @@ function setCP()
 	mssql)
 		cp="../lib/mssql/*:../lib/*"
 		;;
+	gaussdb)
+		cp="../lib/gaussdb/*:../lib/*"
+		;;
     esac
     myCP=".:${cp}:../dist/*"
     export myCP
@@ -63,7 +66,7 @@ function setCP()
 # is a database, we support.
 # ----
 case "$(getProp db)" in
-    firebird|oracle|postgres|mysql|oceanbase|dameng|tidb|mssql)
+    firebird|oracle|postgres|mysql|oceanbase|dameng|tidb|mssql|gaussdb)
 	;;
     "")	echo "ERROR: missing db= config option in ${PROPS}" >&2
 	exit 1
