@@ -21,7 +21,8 @@ public interface jTPCCConfig
                 DB_OCEANBASE = 5,
                 DB_DAMENG = 6, 
                 DB_TIDB = 7,
-                DB_MSSQL = 8;
+                DB_MSSQL = 8,
+                DB_GAUSSDB = 9;
 
     public final static int     NEW_ORDER = 1,
 				PAYMENT = 2,
