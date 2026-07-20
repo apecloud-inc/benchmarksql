@@ -133,6 +133,8 @@ public class jTPCC implements jTPCCConfig
 		dbType = DB_TIDB;
 	else if (iDB.equals("mssql"))
 		dbType = DB_MSSQL;
+	else if (iDB.equals("gaussdb"))
+		dbType = DB_GAUSSDB;
 	else
 	{
 	    log.error("unknown database type '" + iDB + "'");
